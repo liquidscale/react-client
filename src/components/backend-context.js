@@ -20,7 +20,6 @@ const subscriptionFactory = (socket, builder, cleaner) => {
   setTimeout(() => {
     try {
       function factory(subscriptionId) {
-        console.log("creating subscription ", subscriptionId);
         instance.id = subscriptionId;
         socket.on(subscriptionId, function ({ key, payload }) {
           instance.emit(key, payload);
