@@ -22,6 +22,10 @@ import { BackendContextProvider } from "@liquidscale/react-client";
 
 The BackendContextProvider establish the WebSocket connection to the backend so that all children components can use the various LQS hooks described below.
 
+### Auth Token
+
+You can pass an optional authentication token to your state engine. This token is optional but assuming that you configured security in your LQS state engine, you will need to generate and pass the token here. You can use the `@liquidscale/react-auth-context` module to quickly wrap things up with OIDC authentication.
+
 ## Using Context Directly
 
 ```jsx
