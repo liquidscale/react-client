@@ -1,15 +1,17 @@
 {
     "name": "@liquidscale/react-client",
-    "version": "0.1.0-1",
+    "version": "0.1.0-2",
     "scripts": {
         "start": "start-storybook",
         "build": "webpack --mode production"
     },
     "main": "./dist/index.js",
+    "peerDependencies": {
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1"
+    },
     "dependencies": {
         "fbemitter": "^2.1.1",
-        "react": "^17.0.1",
-        "react-dom": "^17.0.1",
         "react-use": "^15.3.4",
         "shortid-36": "^0.1.2",
         "socket.io-client": "^3.0.3"
