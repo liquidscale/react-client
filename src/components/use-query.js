@@ -10,7 +10,18 @@ export function useQuery(queryExpr, initialParams = [], initialOptions = {}) {
   const [error, setError] = useState();
   const [params, setParams] = useState(initialParams);
   const [options, setOptions] = useState(initialOptions);
-  const subscription = useMemo(() => backend.query(queryExpr, params, null, options), [queryExpr, params, options, backend]);
+  const subscription = useMemo(() => {
+    if (!options) return;
+    if (typeof options.active !== "undefined") {
+      if (typeof options.active === "function") {
+        return options.active() && backend.query(queryExpr, params, null, options);
+      } else {
+        return options.active && backend.query(queryExpr, params, null, options);
+      }
+    } else {
+      return backend.query(queryExpr, params, null, options);
+    }
+  }, [queryExpr, params, options, backend]);
 
   useEffect(() => {
     if (!isEqual(params, initialParams)) {
