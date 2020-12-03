@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState, useMemo } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useContext, useEffect, useState } from "react";
 import { BackendContext } from "./backend-context";
 import isEqual from "react-fast-compare";
 
-export function useQuery(queryExpr, initialParams = [], initialOptions = {}) {
+export function useQuery(queryExpr, initialParams, initialOptions) {
   const { backend, connected } = useContext(BackendContext);
 
   const [data, setData] = useState();
@@ -10,31 +11,34 @@ export function useQuery(queryExpr, initialParams = [], initialOptions = {}) {
   const [error, setError] = useState();
   const [params, setParams] = useState(initialParams);
   const [options, setOptions] = useState(initialOptions);
-  const subscription = useMemo(() => {
-    if (!options) return;
-    if (typeof options.active !== "undefined") {
-      if (typeof options.active === "function") {
-        return options.active() && backend.query(queryExpr, params, null, options);
-      } else {
-        return options.active && backend.query(queryExpr, params, null, options);
-      }
-    } else {
-      return backend.query(queryExpr, params, null, options);
-    }
-  }, [queryExpr, params, options, backend]);
+  const [subscription, setSubscription] = useState();
 
   useEffect(() => {
-    if (!isEqual(params, initialParams)) {
-      setParams(initialParams);
+    if (typeof options.active !== "undefined") {
+      if (typeof options.active === "function") {
+        if (options.active()) {
+          setSubscription(backend.query(queryExpr, params, null, options));
+        }
+      } else if (options.active) {
+        setSubscription(backend.query(queryExpr, params, null, options));
+      }
+    } else {
+      setSubscription(backend.query(queryExpr, params, null, options));
     }
+  }, [options, params, queryExpr]);
+
+  useEffect(() => {
     if (!isEqual(options, initialOptions)) {
       setOptions(initialOptions);
+    }
+    if (!isEqual(params, initialParams)) {
+      setParams(initialParams);
     }
   }, [initialParams, initialOptions]);
 
   useEffect(() => {
-    const listeners = [];
     if (subscription) {
+      const listeners = [];
       listeners.push(
         subscription.addListener("data", ({ data, total }) => {
           setData(data);
@@ -50,7 +54,7 @@ export function useQuery(queryExpr, initialParams = [], initialOptions = {}) {
         subscription.unsubscribe();
       };
     }
-  }, [subscription.id]);
+  }, [subscription]);
 
   return { data, total, connected, error };
 }

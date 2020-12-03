@@ -6,6 +6,9 @@ import { EventEmitter } from "fbemitter";
 import { useLocalStorage } from "react-use";
 import shortid from "shortid-36";
 
+export { useQuery } from "./use-query";
+export { useAction } from "./use-action";
+
 const BackendContext = React.createContext();
 
 enablePatches();
@@ -14,7 +17,7 @@ const subscriptionFactory = (socket, builder, cleaner) => {
   const instance = new EventEmitter();
 
   instance.unsubscribe = function () {
-    socket.emit("unsubscribe", { id: this.id }, cleaner);
+    socket.emit("unsubscribe", this.id, cleaner);
   };
 
   setTimeout(() => {
