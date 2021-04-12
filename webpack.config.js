@@ -3,7 +3,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: "./src/main.js",
   externals: [nodeExternals()],
   output: {
     filename: "index.js",
