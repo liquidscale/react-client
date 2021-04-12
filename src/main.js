@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { webSocket } from "rxjs/webSocket";
 import shortid from "shortid-36";
 import { filter } from "rxjs/operators";
 import isEqual from "react-fast-compare";
 import { useSessionStorage } from "react-use";
 
-const LQSContext = createContext();
+const LQSContext = React.createContext();
 
 function LQSContextProvider({ children, url }) {
   const [backend, setBackend] = useState();

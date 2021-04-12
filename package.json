@@ -1,6 +1,6 @@
 {
   "name": "@liquidscale/react-client",
-  "version": "0.1.1",
+  "version": "0.1.2-0",
   "scripts": {
     "prepublishOnly": "npm run release",
     "release": "npm run build:dev && npm run build:prod",
